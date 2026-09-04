@@ -16,31 +16,31 @@ const PROJECTS = [
     title: "Brand film — [Client Name]",
     category: "Brand",
     duration: "02:14",
-    youtubeId: "PLACEHOLDER_VIDEO_ID_1",
+    youtubeId: "_vdJT4n8wzk",
   },
   {
     title: "Short-form campaign — [Client Name]",
     category: "Social",
     duration: "00:42",
-    youtubeId: "PLACEHOLDER_VIDEO_ID_2",
+    youtubeId: "-4Dd9O7aDfH1HkFI2",
   },
   {
     title: "Documentary short — [Project Name]",
     category: "Narrative",
     duration: "08:31",
-    youtubeId: "PLACEHOLDER_VIDEO_ID_3",
+    youtubeId: "-4Dd9O7aDfH1HkFI3",
   },
   {
     title: "Music video — [Artist Name]",
     category: "Music",
     duration: "03:05",
-    youtubeId: "PLACEHOLDER_VIDEO_ID_4",
+    youtubeId: "-4Dd9O7aDfH1HkFI4",
   },
   {
     title: "Product launch — [Client Name]",
     category: "Brand",
     duration: "01:20",
-    youtubeId: "PLACEHOLDER_VIDEO_ID_5",
+    youtubeId: "-4Dd9O7aDfH1HkFI5",
   },
 ];
 
