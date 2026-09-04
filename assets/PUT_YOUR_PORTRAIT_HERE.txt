@@ -1,0 +1,5 @@
+Add a photo of yourself here named exactly: portrait.jpg
+
+The About section (index.html) already points to assets/portrait.jpg.
+Until you add one, that spot will just show an empty frame with a
+reminder message — the site still works fine either way.
