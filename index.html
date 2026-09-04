@@ -19,8 +19,7 @@
 <body>
 
   <!-- ============================================= -->
-  <!-- NAV — sticky top bar with a live "timecode" that
-       advances as you scroll, like an editor's playhead -->
+  <!-- NAV — sticky top bar -->
   <!-- ============================================= -->
   <header class="nav" id="nav">
     <a href="#home" class="nav__logo">FRAME<span class="nav__logo-dot">.</span></a>
@@ -33,7 +32,6 @@
     </nav>
 
     <div class="nav__right">
-      <span class="timecode" id="timecode" aria-hidden="true">00:00:00:00</span>
       <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -140,6 +138,25 @@
       <div class="section__head">
         <h2 class="section__title">Capabilities</h2>
         <p class="section__desc">What I handle from raw footage to final export.</p>
+      </div>
+
+      <div class="software-grid" aria-label="Software I use">
+        <div class="software-tile">
+          <span class="software-tile__logo software-tile__logo--pr">Pr</span>
+          <span class="software-tile__name">Premiere Pro</span>
+        </div>
+        <div class="software-tile">
+          <span class="software-tile__logo software-tile__logo--dr">DR</span>
+          <span class="software-tile__name">DaVinci Resolve</span>
+        </div>
+        <div class="software-tile">
+          <span class="software-tile__logo software-tile__logo--ae">Ae</span>
+          <span class="software-tile__name">After Effects</span>
+        </div>
+        <div class="software-tile">
+          <span class="software-tile__logo software-tile__logo--cc">CC</span>
+          <span class="software-tile__name">CapCut</span>
+        </div>
       </div>
 
       <div class="cap-list">

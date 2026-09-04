@@ -58,16 +58,30 @@ PROJECTS.forEach((project, i) => {
   const index = String(i + 1).padStart(2, "0");
 
   row.innerHTML = `
-    <span class="bin-row__index">A${index}</span>
-    <div class="bin-row__main">
-      <p class="bin-row__title">${project.title}</p>
-      <p class="bin-row__desc">Click to play on YouTube</p>
+    <div class="bin-row__thumb">
+      <img src="https://i.ytimg.com/vi/${project.youtubeId}/hqdefault.jpg" alt="" loading="lazy" />
+      <iframe title="${project.title}" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      <span class="bin-row__play" aria-hidden="true">▶</span>
+      <span class="bin-row__index">A${index}</span>
     </div>
-    <span class="bin-row__tag">${project.category}</span>
-    <span class="bin-row__duration">${project.duration}</span>
+    <div class="bin-row__details">
+      <div class="bin-row__main">
+        <p class="bin-row__title">${project.title}</p>
+        <p class="bin-row__desc">Click to play inline</p>
+      </div>
+      <div class="bin-row__meta">
+        <span class="bin-row__tag">${project.category}</span>
+        <span class="bin-row__duration">${project.duration}</span>
+      </div>
+    </div>
   `;
 
-  const open = () => openModal(project.youtubeId);
+  const open = () => {
+    if (row.classList.contains("is-playing")) return;
+    const player = row.querySelector("iframe");
+    player.src = `https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0`;
+    row.classList.add("is-playing");
+  };
   row.addEventListener("click", open);
   row.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
@@ -111,7 +125,7 @@ document.addEventListener("keydown", (e) => {
    enters the viewport. Runs once per element, then stops
    watching it (so it doesn't re-trigger while scrolling).
    ========================================================= */
-document.querySelectorAll(".section, .bin-row, .cap-row").forEach((el) => {
+document.querySelectorAll(".section, .bin, .bin-row, .cap-row").forEach((el) => {
   el.classList.add("reveal");
 });
 
@@ -120,7 +134,8 @@ const revealObserver = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
-        revealObserver.unobserve(entry.target);
+      } else {
+        entry.target.classList.remove("is-visible");
       }
     });
   },
@@ -128,6 +143,23 @@ const revealObserver = new IntersectionObserver(
 );
 
 document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+const roadmap = document.getElementById("bin");
+let roadmapFrame;
+
+function updateRoadmapMarker() {
+  const roadmapBounds = roadmap.getBoundingClientRect();
+  const progress = Math.max(0, Math.min(1, (window.innerHeight * 0.5 - roadmapBounds.top) / roadmapBounds.height));
+  const markerY = progress * Math.max(0, roadmap.offsetHeight - 10);
+  roadmap.style.setProperty("--roadmap-marker-y", `${markerY}px`);
+}
+
+window.addEventListener("scroll", () => {
+  cancelAnimationFrame(roadmapFrame);
+  roadmapFrame = requestAnimationFrame(updateRoadmapMarker);
+}, { passive: true });
+window.addEventListener("resize", updateRoadmapMarker);
+updateRoadmapMarker();
 
 /* =========================================================
    NAV — background on scroll + mobile menu toggle
@@ -152,31 +184,6 @@ navLinks.querySelectorAll("a").forEach((link) => {
     navToggle.setAttribute("aria-expanded", "false");
   });
 });
-
-/* =========================================================
-   TIMECODE READOUT
-   Purely decorative — turns scroll position into a
-   HH:MM:SS:FF style timecode, like a video playhead.
-   ========================================================= */
-const timecodeEl = document.getElementById("timecode");
-
-function updateTimecode() {
-  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
-
-  const totalFrames = Math.floor(progress * (59 * 60 * 24 + 59 * 24 + 24 * 59)); // arbitrary but stable range
-  const fps = 24;
-  const totalSeconds = Math.floor(progress * 3599); // caps around 00:59:59
-  const hh = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-  const mm = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
-  const ss = String(totalSeconds % 60).padStart(2, "0");
-  const ff = String(Math.floor(progress * fps) % fps).padStart(2, "0");
-
-  timecodeEl.textContent = `${hh}:${mm}:${ss}:${ff}`;
-}
-
-window.addEventListener("scroll", updateTimecode, { passive: true });
-updateTimecode();
 
 /* =========================================================
    FOOTER YEAR
