@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Frame — Video Editor Portfolio</title>
+  <title>temevisuals — Video Editor Portfolio</title>
   <meta name="description" content="Video editing portfolio — short-form, long-form, and brand video work." />
 
   <!-- Favicon (a plain SVG frame-corner mark, swap the file in /assets whenever you like) -->
@@ -12,7 +12,7 @@
   <!-- Google Fonts: Fraunces for big display headlines, IBM Plex Sans for everything else -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -22,16 +22,18 @@
   <!-- NAV — sticky top bar -->
   <!-- ============================================= -->
   <header class="nav" id="nav">
-    <a href="#home" class="nav__logo">FRAME<span class="nav__logo-dot">.</span></a>
-
-    <nav class="nav__links" id="navLinks">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="#capabilities">Capabilities</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <a href="#home" class="nav__logo">temevisuals<span class="nav__logo-dot">.</span></a>
 
     <div class="nav__right">
+      <nav class="nav__links" id="navLinks">
+        <a href="#work">Work</a>
+        <a href="#shorts">Shorts</a>
+        <a href="#contact">Contacts</a>
+      </nav>
+      <span class="nav__divider" aria-hidden="true"></span>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+        <span class="theme-toggle__icon" aria-hidden="true">☼</span>
+      </button>
       <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -59,20 +61,12 @@
         </div>
       </div>
 
-      <!-- Decorative "timeline" graphic — a single animated moment, not scattered effects -->
-      <div class="hero__scene" aria-hidden="true">
-        <div class="scrubber">
-          <div class="scrubber__track">
-            <div class="scrubber__playhead" id="playhead"></div>
-          </div>
-          <div class="scrubber__clips">
-            <span class="clip clip--a"></span>
-            <span class="clip clip--b"></span>
-            <span class="clip clip--c"></span>
-            <span class="clip clip--d"></span>
-          </div>
-        </div>
-        <p class="scrubber__label">A001_edit_final_v3.mp4</p>
+      <div class="hero__scene hero__intro-video">
+        <video id="introVideo" preload="metadata" playsinline poster="assets/img/project-1.jpg.png">
+          <source src="Video/project-1.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <button class="hero__video-play" id="introVideoPlay" type="button" aria-label="Play introduction video">▶</button>
       </div>
     </section>
 
@@ -80,12 +74,9 @@
     <!-- WORK / BIN — list of projects styled like an
          editing software "project bin" -->
     <!-- ============================================= -->
-    <section class="section" id="work">
+    <section class="section work-section" id="work">
       <div class="section__head">
-        <h2 class="section__title">Selected work</h2>
-        <p class="section__desc">
-          Every row below plays straight from YouTube. Click a row to open it.
-        </p>
+        <h2 class="section__title">Long form</h2>
       </div>
 
       <div class="bin" id="bin">
@@ -95,134 +86,48 @@
     </section>
 
     <!-- ============================================= -->
-    <!-- ABOUT -->
+    <!-- SHORTS — uploaded short-form videos -->
     <!-- ============================================= -->
-    <section class="section section--about" id="about">
-      <div class="about__portrait">
-        <!-- Replace with a real photo: assets/portrait.jpg -->
-        <div class="about__portrait-frame">
-          <img src="assets/portrait.jpg" alt="Portrait of [Your Name]" onerror="this.parentElement.classList.add('is-empty')" />
-        </div>
-      </div>
-
-      <div class="about__copy">
-        <h2 class="section__title">About</h2>
-        <p class="about__lead">
-          I've spent the last <strong>[X years]</strong> in the timeline — cutting for
-          creators, agencies and small brands who need footage to feel intentional,
-          not just trimmed.
-        </p>
-        <p>
-          My process starts with the story, not the software: a rough assembly to find
-          the shape, then a pass for rhythm, then one for sound and colour. I work in
-          Premiere Pro and DaVinci Resolve, and I'm comfortable jumping into whatever
-          workflow a client already has running.
-        </p>
-        <p>
-          Outside client work I edit <a href="#work">my own experiments</a> — replace
-          this paragraph with whatever makes you sound like you, not a template.
-        </p>
-
-        <ul class="about__stats">
-          <li><span>[50+]</span>Projects delivered</li>
-          <li><span>[4]</span>Years editing</li>
-          <li><span>[12]</span>Regular clients</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ============================================= -->
-    <!-- CAPABILITIES — hairline list, not shadow cards -->
-    <!-- ============================================= -->
-    <section class="section" id="capabilities">
+    <section class="section shorts-section" id="shorts">
       <div class="section__head">
-        <h2 class="section__title">Capabilities</h2>
-        <p class="section__desc">What I handle from raw footage to final export.</p>
+        <h2 class="section__title">Short form</h2>
       </div>
 
-      <div class="software-grid" aria-label="Software I use">
-        <div class="software-tile">
-          <span class="software-tile__logo software-tile__logo--pr">Pr</span>
-          <span class="software-tile__name">Premiere Pro</span>
-        </div>
-        <div class="software-tile">
-          <span class="software-tile__logo software-tile__logo--dr">DR</span>
-          <span class="software-tile__name">DaVinci Resolve</span>
-        </div>
-        <div class="software-tile">
-          <span class="software-tile__logo software-tile__logo--ae">Ae</span>
-          <span class="software-tile__name">After Effects</span>
-        </div>
-        <div class="software-tile">
-          <span class="software-tile__logo software-tile__logo--cc">CC</span>
-          <span class="software-tile__name">CapCut</span>
-        </div>
-      </div>
-
-      <div class="cap-list">
-        <div class="cap-row">
-          <h3>Narrative editing</h3>
-          <p>Assembling raw footage into a paced, structured cut — for YouTube, docs and branded stories.</p>
-          <span class="cap-row__tools">Premiere Pro · DaVinci Resolve</span>
-        </div>
-        <div class="cap-row">
-          <h3>Short-form &amp; social cuts</h3>
-          <p>Fast, caption-driven edits built for retention on Reels, TikTok and Shorts.</p>
-          <span class="cap-row__tools">Premiere Pro · CapCut</span>
-        </div>
-        <div class="cap-row">
-          <h3>Colour grading</h3>
-          <p>Matching shots and building a consistent, intentional look across a project.</p>
-          <span class="cap-row__tools">DaVinci Resolve</span>
-        </div>
-        <div class="cap-row">
-          <h3>Sound design &amp; mix</h3>
-          <p>Cleaning dialogue, laying music and SFX, and mixing so nothing fights for attention.</p>
-          <span class="cap-row__tools">Premiere Pro · Audition</span>
-        </div>
-        <div class="cap-row">
-          <h3>Motion &amp; titles</h3>
-          <p>Lightweight motion graphics, lower thirds and titles that support the edit instead of decorating it.</p>
-          <span class="cap-row__tools">After Effects</span>
-        </div>
-      </div>
+      <div class="shorts-grid" id="shortsGrid"></div>
     </section>
 
-    <!-- ============================================= -->
-    <!-- TESTIMONIAL -->
-    <!-- ============================================= -->
-    <section class="quote">
-      <p class="quote__text">
-        "[Drop a short line from a happy client here — the more specific, the more
-        it's worth. Swap this out the moment you have one.]"
-      </p>
-      <p class="quote__attr">— [Client Name], [Client Company]</p>
-    </section>
 
     <!-- ============================================= -->
     <!-- CONTACT -->
     <!-- ============================================= -->
     <section class="section contact" id="contact">
-      <h2 class="contact__title">Let's cut<br />something great.</h2>
-      <p class="contact__sub">
-        Tell me about the footage, the deadline and the platform it's for.
-      </p>
+      <div class="contact__intro">
+        <h2 class="contact__title">Let's cut<br />something great.</h2>
+      </div>
 
-      <a class="contact__email" href="mailto:you@example.com">you@example.com</a>
+      <div class="contact__actions">
+        <div class="contact__email-block">
+          <a class="contact__email" href="mailto:you@example.com">Let's talk</a>
+        </div>
 
-      <div class="contact__social">
-        <a href="https://youtube.com/@yourhandle" target="_blank" rel="noopener">YouTube</a>
-        <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://vimeo.com/yourhandle" target="_blank" rel="noopener">Vimeo</a>
-        <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noopener">LinkedIn</a>
+        <div class="contact__social-block">
+          <div class="contact__social">
+            <a href="https://youtube.com/@yourhandle" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">
+              <img src="https://cdn.simpleicons.org/youtube/ffffff" alt="" />
+            </a>
+            <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+              <img src="https://cdn.simpleicons.org/instagram/ffffff" alt="" />
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    <span>FRAME<span class="nav__logo-dot">.</span></span>
-    <span>© <span id="year"></span> [Your Name]. All rights reserved.</span>
+    <span>temevisuals<span class="nav__logo-dot">.</span></span>
+    <span>© <span id="year"></span> All rights reserved.</span>
   </footer>
 
   <!-- ============================================= -->

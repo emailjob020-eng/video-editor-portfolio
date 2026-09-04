@@ -13,34 +13,64 @@
    ========================================================= */
 const PROJECTS = [
   {
-    title: "Brand film — [Client Name]",
+    title: "Brand film",
     category: "Brand",
     duration: "02:14",
     youtubeId: "_vdJT4n8wzk",
   },
   {
-    title: "Short-form campaign — [Client Name]",
+    title: "Short-form campaign",
     category: "Social",
     duration: "00:42",
     youtubeId: "-4Dd9O7aDfH1HkFI2",
   },
   {
-    title: "Documentary short — [Project Name]",
+    title: "Documentary short",
     category: "Narrative",
     duration: "08:31",
     youtubeId: "-4Dd9O7aDfH1HkFI3",
   },
   {
-    title: "Music video — [Artist Name]",
+    title: "Music video",
     category: "Music",
     duration: "03:05",
     youtubeId: "-4Dd9O7aDfH1HkFI4",
   },
   {
-    title: "Product launch — [Client Name]",
+    title: "Product launch",
     category: "Brand",
     duration: "01:20",
     youtubeId: "-4Dd9O7aDfH1HkFI5",
+  },
+  {
+    title: "Creator story",
+    category: "Narrative",
+    duration: "04:18",
+    youtubeId: "",
+  },
+];
+
+/* Add future uploaded clips here. Keep each video inside the Video folder. */
+const SHORT_VIDEOS = [
+  {
+    title: "Project 01",
+    description: "Short-form edit",
+    source: "Video/project-1.mp4",
+  },
+  {
+    title: "Project 02",
+    description: "Add Video/project-2.mp4",
+    source: "",
+  },
+  {
+    title: "Project 03",
+    description: "Add Video/project-3.mp4",
+    source: "",
+  },
+  {
+    title: "Project 04",
+    description: "Add Video/project-4.mp4",
+    source: "",
   },
 ];
 
@@ -55,31 +85,24 @@ PROJECTS.forEach((project, i) => {
   row.setAttribute("role", "button");
   row.setAttribute("tabindex", "0");
 
-  const index = String(i + 1).padStart(2, "0");
+  const thumbnail = project.youtubeId
+    ? `<img src="https://i.ytimg.com/vi/${project.youtubeId}/hqdefault.jpg" alt="" loading="lazy" />`
+    : `<div class="bin-row__placeholder"></div>`;
 
   row.innerHTML = `
     <div class="bin-row__thumb">
-      <img src="https://i.ytimg.com/vi/${project.youtubeId}/hqdefault.jpg" alt="" loading="lazy" />
-      <iframe title="${project.title}" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      <span class="bin-row__play" aria-hidden="true">▶</span>
-      <span class="bin-row__index">A${index}</span>
-    </div>
-    <div class="bin-row__details">
-      <div class="bin-row__main">
-        <p class="bin-row__title">${project.title}</p>
-        <p class="bin-row__desc">Click to play inline</p>
-      </div>
-      <div class="bin-row__meta">
-        <span class="bin-row__tag">${project.category}</span>
-        <span class="bin-row__duration">${project.duration}</span>
-      </div>
+      ${thumbnail}
+      ${project.youtubeId ? `<iframe title="${project.title}" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>` : ""}
+      <button class="bin-row__play" type="button" aria-label="Play ${project.title}">▶</button>
     </div>
   `;
 
   const open = () => {
+    if (!project.youtubeId) return;
     if (row.classList.contains("is-playing")) return;
+    stopOtherMedia(row);
     const player = row.querySelector("iframe");
-    player.src = `https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0`;
+    player.src = `https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0&enablejsapi=1`;
     row.classList.add("is-playing");
   };
   row.addEventListener("click", open);
@@ -88,6 +111,81 @@ PROJECTS.forEach((project, i) => {
   });
 
   bin.appendChild(row);
+});
+
+function stopOtherMedia(activeRow = null) {
+  document.querySelectorAll(".bin-row.is-playing").forEach((row) => {
+    if (row === activeRow) return;
+    row.querySelector("iframe").src = "";
+    row.classList.remove("is-playing");
+  });
+
+  document.querySelectorAll(".short-card video").forEach((video) => {
+    if (!activeRow || !activeRow.contains(video)) video.pause();
+  });
+
+  const introVideo = document.getElementById("introVideo");
+  if (introVideo && (!activeRow || !activeRow.contains(introVideo))) introVideo.pause();
+}
+
+const introVideo = document.getElementById("introVideo");
+const introVideoPlay = document.getElementById("introVideoPlay");
+
+introVideoPlay.addEventListener("click", () => {
+  if (introVideo.paused) {
+    stopOtherMedia(introVideo.parentElement);
+    introVideo.play();
+  } else {
+    introVideo.pause();
+  }
+});
+introVideo.addEventListener("play", () => {
+  introVideo.controls = true;
+  stopOtherMedia(introVideo.parentElement);
+  introVideoPlay.classList.add("is-playing");
+});
+introVideo.addEventListener("pause", () => introVideoPlay.classList.remove("is-playing"));
+introVideo.addEventListener("ended", () => introVideoPlay.classList.remove("is-playing"));
+
+const shortsGrid = document.getElementById("shortsGrid");
+
+SHORT_VIDEOS.forEach((video, i) => {
+  const card = document.createElement("article");
+  card.className = "short-card reveal";
+  const media = video.source
+    ? `<video preload="metadata" playsinline poster="assets/img/project-1.jpg.png"><source src="${video.source}" type="video/mp4" />Your browser does not support the video tag.</video><button class="short-card__play" type="button" aria-label="Play ${video.title}">▶</button>`
+    : `<div class="short-card__placeholder"></div><button class="short-card__play" type="button" aria-label="Play ${video.title}">▶</button>`;
+  card.innerHTML = `
+    <div class="short-card__media">
+      ${media}
+    </div>
+  `;
+  const player = card.querySelector("video");
+  if (player) {
+    const playButton = card.querySelector(".short-card__play");
+    playButton.addEventListener("click", () => {
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
+    });
+    player.addEventListener("play", () => {
+      player.controls = true;
+      stopOtherMedia(card);
+      document.querySelectorAll(".short-card video").forEach((otherPlayer) => {
+        if (otherPlayer !== player) otherPlayer.pause();
+      });
+    });
+    player.addEventListener("play", () => card.classList.add("is-playing"));
+    player.addEventListener("pause", () => card.classList.remove("is-playing"));
+    player.addEventListener("ended", () => card.classList.remove("is-playing"));
+  } else {
+    card.querySelector(".short-card__play").addEventListener("click", (event) => {
+      event.preventDefault();
+    });
+  }
+  shortsGrid.appendChild(card);
 });
 
 /* =========================================================
@@ -134,6 +232,9 @@ const revealObserver = new IntersectionObserver(
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
+        if (entry.target.classList.contains("bin")) {
+          entry.target.classList.add("has-been-seen");
+        }
       } else {
         entry.target.classList.remove("is-visible");
       }
@@ -143,23 +244,6 @@ const revealObserver = new IntersectionObserver(
 );
 
 document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
-
-const roadmap = document.getElementById("bin");
-let roadmapFrame;
-
-function updateRoadmapMarker() {
-  const roadmapBounds = roadmap.getBoundingClientRect();
-  const progress = Math.max(0, Math.min(1, (window.innerHeight * 0.5 - roadmapBounds.top) / roadmapBounds.height));
-  const markerY = progress * Math.max(0, roadmap.offsetHeight - 10);
-  roadmap.style.setProperty("--roadmap-marker-y", `${markerY}px`);
-}
-
-window.addEventListener("scroll", () => {
-  cancelAnimationFrame(roadmapFrame);
-  roadmapFrame = requestAnimationFrame(updateRoadmapMarker);
-}, { passive: true });
-window.addEventListener("resize", updateRoadmapMarker);
-updateRoadmapMarker();
 
 /* =========================================================
    NAV — background on scroll + mobile menu toggle
@@ -171,6 +255,32 @@ window.addEventListener("scroll", () => {
 
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
+const themeToggle = document.getElementById("themeToggle");
+const logoLink = document.querySelector(".nav__logo");
+
+logoLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  document.getElementById("home").scrollIntoView({ behavior: "smooth", block: "start" });
+  logoLink.classList.remove("is-returning");
+  requestAnimationFrame(() => logoLink.classList.add("is-returning"));
+});
+logoLink.addEventListener("animationend", () => logoLink.classList.remove("is-returning"));
+
+function setTheme(isLight) {
+  document.body.classList.toggle("is-light", isLight);
+  themeToggle.setAttribute("aria-pressed", String(isLight));
+  themeToggle.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+  themeToggle.querySelector(".theme-toggle__icon").textContent = isLight ? "☾" : "☼";
+}
+
+const savedTheme = localStorage.getItem("frame-theme");
+setTheme(savedTheme === "light");
+
+themeToggle.addEventListener("click", () => {
+  const isLight = !document.body.classList.contains("is-light");
+  setTheme(isLight);
+  localStorage.setItem("frame-theme", isLight ? "light" : "dark");
+});
 
 navToggle.addEventListener("click", () => {
   const isOpen = navLinks.classList.toggle("is-open");
@@ -179,9 +289,24 @@ navToggle.addEventListener("click", () => {
 
 // Close the mobile menu after tapping a link
 navLinks.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   link.addEventListener("click", () => {
     navLinks.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
+  });
+});
+
+document.querySelectorAll(".hero__actions a").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
 
