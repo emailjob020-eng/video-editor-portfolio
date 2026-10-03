@@ -40,7 +40,7 @@ const PROJECTS = [
     duration: "03:05",
     youtubeId: "",
     source: "Video/cyclops4.mp4",
-    thumbnail: "assets/img/thumbnaiil.png",
+    thumbnail: "assets/img/1003.png",
   },
   {
     title: "Product launch",
