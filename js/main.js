@@ -46,7 +46,9 @@ const PROJECTS = [
     title: "Product launch",
     category: "Brand",
     duration: "01:20",
-    youtubeId: "-4Dd9O7aDfH1HkFI5",
+    youtubeId: "",
+    source: "Video/5th.mp4",
+    thumbnail: "assets/img/fat.jpg",
   },
   {
     title: "Creator story",
