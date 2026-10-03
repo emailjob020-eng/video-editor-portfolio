@@ -266,6 +266,8 @@ body.is-light .hero__actions .btn--primary:hover {
 .hero__scene { justify-self: center; width: 100%; max-width: 560px; }
 .hero__intro-video { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; background: #09090a; }
 .hero__intro-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero__intro-cover { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: opacity 0.2s ease; }
+.hero__intro-video.is-playing .hero__intro-cover { opacity: 0; }
 .hero__video-play {
   position: absolute;
   top: 50%;

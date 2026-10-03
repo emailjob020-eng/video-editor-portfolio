@@ -103,11 +103,12 @@ PROJECTS.forEach((project, i) => {
     <div class="bin-row__thumb">
       ${thumbnail}
       ${project.youtubeId ? `<iframe title="${project.title}" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>` : ""}
-      <button class="bin-row__play" type="button" aria-label="Play ${project.title}">▶</button>
+      <button class="bin-row__play" type="button" aria-label="Play ${project.title}" aria-pressed="false">▶</button>
     </div>
   `;
 
   const player = project.source ? row.querySelector("video") : null;
+  const playButton = row.querySelector(".bin-row__play");
 
   if (player) {
     player.muted = false;
@@ -139,6 +140,10 @@ PROJECTS.forEach((project, i) => {
   };
 
   if (player && project.source) {
+    playButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      open();
+    });
     player.addEventListener("click", (event) => {
       event.stopPropagation();
       if (player.paused) {
@@ -155,9 +160,18 @@ PROJECTS.forEach((project, i) => {
       player.volume = 1;
       stopOtherMedia(row);
       row.classList.add("is-playing");
+      playButton.textContent = "⏸";
+      playButton.setAttribute("aria-label", `Pause ${project.title}`);
+      playButton.setAttribute("aria-pressed", "true");
     });
-    player.addEventListener("pause", () => row.classList.remove("is-playing"));
-    player.addEventListener("ended", () => row.classList.remove("is-playing"));
+    const restoreCover = () => {
+      row.classList.remove("is-playing");
+      playButton.textContent = "▶";
+      playButton.setAttribute("aria-label", `Play ${project.title}`);
+      playButton.setAttribute("aria-pressed", "false");
+    };
+    player.addEventListener("pause", restoreCover);
+    player.addEventListener("ended", restoreCover);
   }
 
   row.addEventListener("click", open);
@@ -197,13 +211,31 @@ introVideoPlay.addEventListener("click", () => {
     introVideo.pause();
   }
 });
-introVideo.addEventListener("play", () => {
-  introVideo.controls = true;
-  stopOtherMedia(introVideo.parentElement);
-  introVideoPlay.classList.add("is-playing");
+introVideo.addEventListener("click", () => {
+  if (!introVideo.paused) introVideo.pause();
 });
-introVideo.addEventListener("pause", () => introVideoPlay.classList.remove("is-playing"));
-introVideo.addEventListener("ended", () => introVideoPlay.classList.remove("is-playing"));
+introVideo.addEventListener("play", () => {
+  stopOtherMedia(introVideo.parentElement);
+  introVideo.parentElement.classList.add("is-playing");
+  introVideoPlay.classList.add("is-playing");
+  introVideoPlay.textContent = "⏸";
+  introVideoPlay.setAttribute("aria-label", "Pause introduction video");
+  introVideoPlay.setAttribute("aria-pressed", "true");
+});
+introVideo.addEventListener("pause", () => {
+  introVideo.parentElement.classList.remove("is-playing");
+  introVideoPlay.classList.remove("is-playing");
+  introVideoPlay.textContent = "▶";
+  introVideoPlay.setAttribute("aria-label", "Play introduction video");
+  introVideoPlay.setAttribute("aria-pressed", "false");
+});
+introVideo.addEventListener("ended", () => {
+  introVideo.parentElement.classList.remove("is-playing");
+  introVideoPlay.classList.remove("is-playing");
+  introVideoPlay.textContent = "▶";
+  introVideoPlay.setAttribute("aria-label", "Play introduction video");
+  introVideoPlay.setAttribute("aria-pressed", "false");
+});
 
 const shortsGrid = document.getElementById("shortsGrid");
 
