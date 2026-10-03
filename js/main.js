@@ -55,6 +55,8 @@ const PROJECTS = [
     category: "Narrative",
     duration: "04:18",
     youtubeId: "",
+    source: "Video/6th.mp4",
+    thumbnail: "assets/img/project-1.jpg.png",
   },
 ];
 
