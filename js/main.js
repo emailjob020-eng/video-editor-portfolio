@@ -22,7 +22,9 @@ const PROJECTS = [
     title: "Short-form campaign",
     category: "Social",
     duration: "00:42",
-    youtubeId: "-4Dd9O7aDfH1HkFI2",
+    youtubeId: "",
+    source: "Video/Reasy to Post_1.mp4",
+    thumbnail: "assets/img/thumbnaiil.png",
   },
   {
     title: "Documentary short",
@@ -87,7 +89,11 @@ PROJECTS.forEach((project, i) => {
 
   const thumbnail = project.youtubeId
     ? `<img src="https://i.ytimg.com/vi/${project.youtubeId}/hqdefault.jpg" alt="" loading="lazy" />`
-    : `<div class="bin-row__placeholder"></div>`;
+    : project.source
+      ? `<video preload="metadata" playsinline muted poster="${project.thumbnail || "assets/img/project-1.jpg.png"}"><source src="${project.source}" type="video/mp4" />Your browser does not support the video tag.</video>`
+      : project.thumbnail
+        ? `<img src="${project.thumbnail}" alt="" loading="lazy" />`
+        : `<div class="bin-row__placeholder"></div>`;
 
   row.innerHTML = `
     <div class="bin-row__thumb">
@@ -97,14 +103,40 @@ PROJECTS.forEach((project, i) => {
     </div>
   `;
 
+  const player = project.source ? row.querySelector("video") : null;
+
   const open = () => {
-    if (!project.youtubeId) return;
-    if (row.classList.contains("is-playing")) return;
+    if (project.youtubeId) {
+      if (row.classList.contains("is-playing")) return;
+      stopOtherMedia(row);
+      const iframe = row.querySelector("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0&enablejsapi=1`;
+      row.classList.add("is-playing");
+      return;
+    }
+
+    if (!player) return;
+    if (row.classList.contains("is-playing")) {
+      player.pause();
+      row.classList.remove("is-playing");
+      return;
+    }
+
     stopOtherMedia(row);
-    const player = row.querySelector("iframe");
-    player.src = `https://www.youtube-nocookie.com/embed/${project.youtubeId}?autoplay=1&rel=0&enablejsapi=1`;
+    player.play();
     row.classList.add("is-playing");
   };
+
+  if (player && project.source) {
+    player.addEventListener("play", () => {
+      player.controls = true;
+      stopOtherMedia(row);
+      row.classList.add("is-playing");
+    });
+    player.addEventListener("pause", () => row.classList.remove("is-playing"));
+    player.addEventListener("ended", () => row.classList.remove("is-playing"));
+  }
+
   row.addEventListener("click", open);
   row.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
@@ -116,7 +148,10 @@ PROJECTS.forEach((project, i) => {
 function stopOtherMedia(activeRow = null) {
   document.querySelectorAll(".bin-row.is-playing").forEach((row) => {
     if (row === activeRow) return;
-    row.querySelector("iframe").src = "";
+    const iframe = row.querySelector("iframe");
+    if (iframe) iframe.src = "";
+    const video = row.querySelector("video");
+    if (video) video.pause();
     row.classList.remove("is-playing");
   });
 
