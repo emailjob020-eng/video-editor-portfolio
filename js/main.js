@@ -30,7 +30,9 @@ const PROJECTS = [
     title: "Documentary short",
     category: "Narrative",
     duration: "08:31",
-    youtubeId: "-4Dd9O7aDfH1HkFI3",
+    youtubeId: "",
+    source: "Video/Result.mp4",
+    thumbnail: "assets/img/Untitled-2.png",
   },
   {
     title: "Music video",
@@ -90,7 +92,7 @@ PROJECTS.forEach((project, i) => {
   const thumbnail = project.youtubeId
     ? `<img src="https://i.ytimg.com/vi/${project.youtubeId}/hqdefault.jpg" alt="" loading="lazy" />`
     : project.source
-      ? `<video preload="metadata" playsinline muted poster="${project.thumbnail || "assets/img/project-1.jpg.png"}"><source src="${project.source}" type="video/mp4" />Your browser does not support the video tag.</video>`
+      ? `${project.thumbnail ? `<img src="${project.thumbnail}" alt="" loading="lazy" />` : ""}<video preload="metadata" playsinline poster="${project.thumbnail || "assets/img/project-1.jpg.png"}"><source src="${project.source}" type="video/mp4" />Your browser does not support the video tag.</video>`
       : project.thumbnail
         ? `<img src="${project.thumbnail}" alt="" loading="lazy" />`
         : `<div class="bin-row__placeholder"></div>`;
@@ -104,6 +106,11 @@ PROJECTS.forEach((project, i) => {
   `;
 
   const player = project.source ? row.querySelector("video") : null;
+
+  if (player) {
+    player.muted = false;
+    player.volume = 1;
+  }
 
   const open = () => {
     if (project.youtubeId) {
@@ -123,13 +130,27 @@ PROJECTS.forEach((project, i) => {
     }
 
     stopOtherMedia(row);
+    player.muted = false;
+    player.volume = 1;
     player.play();
     row.classList.add("is-playing");
   };
 
   if (player && project.source) {
+    player.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (player.paused) {
+        stopOtherMedia(row);
+        player.muted = false;
+        player.volume = 1;
+        player.play();
+      } else {
+        player.pause();
+      }
+    });
     player.addEventListener("play", () => {
-      player.controls = true;
+      player.muted = false;
+      player.volume = 1;
       stopOtherMedia(row);
       row.classList.add("is-playing");
     });
