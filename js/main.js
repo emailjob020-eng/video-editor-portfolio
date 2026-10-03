@@ -38,7 +38,9 @@ const PROJECTS = [
     title: "Music video",
     category: "Music",
     duration: "03:05",
-    youtubeId: "-4Dd9O7aDfH1HkFI4",
+    youtubeId: "",
+    source: "Video/cyclops4.mp4",
+    thumbnail: "assets/img/thumbnaiil.png",
   },
   {
     title: "Product launch",
