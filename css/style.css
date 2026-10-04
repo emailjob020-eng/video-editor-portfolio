@@ -76,6 +76,10 @@ body,
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
@@ -918,7 +922,7 @@ body.is-light .contact__social a img { filter: invert(1); }
    ========================================================= */
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; text-align: left; }
-  .hero__scene { justify-self: start; max-width: 320px; }
+  .hero__scene { justify-self: start; max-width: 560px; }
 
   .section--about { grid-template-columns: 1fr; }
   .about__portrait-frame { max-width: 280px; }
@@ -937,6 +941,7 @@ body.is-light .contact__social a img { filter: invert(1); }
 }
 
 @media (max-width: 720px) {
+  .nav { padding-top: 12px; padding-bottom: 12px; }
   .nav__links { 
     position: fixed;
     top: 68px;
@@ -955,14 +960,37 @@ body.is-light .contact__social a img { filter: invert(1); }
   .nav__links.is-open { max-height: 300px; }
   .nav__links a { padding: 16px var(--gutter); border-top: 1px solid var(--line); }
 
-  .nav__toggle { display: flex; }
+  .nav__toggle { display: flex; width: 40px; height: 40px; }
+  .theme-toggle { width: 40px; height: 40px; }
   .bin { grid-template-columns: 1fr; gap: 16px; padding: 8px 0 14px; }
+  .hero__scene { justify-self: stretch; max-width: none; }
   .software-grid { gap: 10px; }
   .software-tile { padding: 12px; }
   .software-tile__name { font-size: 0.8rem; }
-  .shorts-grid { grid-template-columns: minmax(0, 280px); }
+  .shorts-grid { grid-template-columns: minmax(0, min(100%, 280px)); }
 
   .contact__actions { grid-template-columns: 1fr; gap: 28px; }
 
   .footer { flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 480px) {
+  :root { --gutter: 18px; }
+
+  .hero { padding-top: 36px; padding-bottom: 56px; }
+  .hero__title { font-size: clamp(2rem, 9vw, 2.6rem); }
+  .hero__actions { gap: 10px; }
+  .hero__actions .btn { justify-content: center; min-height: 44px; padding: 11px 16px; }
+
+  .section { padding-top: 48px; padding-bottom: 48px; }
+  .section__head { margin-bottom: 28px; }
+  .work-section { padding-top: 38px; padding-bottom: 38px; }
+  .shorts-grid { gap: 14px; }
+  .bin { gap: 14px; }
+
+  .contact { gap: 32px; }
+  .contact__title { font-size: clamp(2rem, 9vw, 2.8rem); }
+
+  .modal { padding: 16px; }
+  .modal__close { top: -38px; }
 }
