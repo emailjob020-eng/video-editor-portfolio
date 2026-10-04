@@ -459,7 +459,19 @@ body.is-light .hero__actions .btn--primary:hover {
   aspect-ratio: 9 / 16;
   background: #09090a;
 }
+.short-card__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
 .short-card video {
+  position: relative;
+  z-index: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -488,6 +500,7 @@ body.is-light .hero__actions .btn--primary:hover {
   transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 .short-card__play:hover { background: rgba(230, 72, 46, 0.78); border-color: rgba(255, 255, 255, 0.8); color: #150705; }
+.short-card.is-playing .short-card__poster { opacity: 0; }
 .short-card.is-playing .short-card__play { opacity: 0; pointer-events: none; }
 .short-card__placeholder {
   display: flex;

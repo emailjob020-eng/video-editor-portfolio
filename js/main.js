@@ -65,6 +65,7 @@ const SHORT_VIDEOS = [
     title: "Project 02",
     description: "Comp 1 short-form edit",
     source: "Video/Comp 1.mp4",
+    thumbnail: "assets/img/2ndshort.png",
   },
 ];
 
@@ -101,6 +102,7 @@ PROJECTS.forEach((project, i) => {
   if (player) {
     player.muted = false;
     player.volume = 1;
+    player.controls = true;
   }
 
   const open = () => {
@@ -146,6 +148,7 @@ PROJECTS.forEach((project, i) => {
     player.addEventListener("play", () => {
       player.muted = false;
       player.volume = 1;
+      player.controls = true;
       stopOtherMedia(row);
       row.classList.add("is-playing");
       playButton.textContent = "⏸";
@@ -231,7 +234,7 @@ SHORT_VIDEOS.forEach((video, i) => {
   const card = document.createElement("article");
   card.className = "short-card reveal";
   const media = video.source
-    ? `<video preload="metadata" playsinline poster="assets/img/project-1.jpg.png"><source src="${video.source}" type="video/mp4" />Your browser does not support the video tag.</video><button class="short-card__play" type="button" aria-label="Play ${video.title}">▶</button>`
+    ? `<img class="short-card__poster" src="${video.thumbnail || "assets/img/project-1.jpg.png"}" alt="" /><video preload="metadata" playsinline poster="${video.thumbnail || "assets/img/project-1.jpg.png"}"><source src="${video.source}" type="video/mp4" />Your browser does not support the video tag.</video><button class="short-card__play" type="button" aria-label="Play ${video.title}">▶</button>`
     : `<div class="short-card__placeholder"></div><button class="short-card__play" type="button" aria-label="Play ${video.title}">▶</button>`;
   card.innerHTML = `
     <div class="short-card__media">
@@ -241,6 +244,16 @@ SHORT_VIDEOS.forEach((video, i) => {
   const player = card.querySelector("video");
   if (player) {
     const playButton = card.querySelector(".short-card__play");
+    const poster = card.querySelector(".short-card__poster");
+    const syncPosterState = () => {
+      const isPaused = player.paused || player.ended;
+      card.classList.toggle("is-playing", !isPaused);
+      if (poster) {
+        poster.style.opacity = isPaused ? "1" : "0";
+        poster.style.pointerEvents = isPaused ? "auto" : "none";
+      }
+    };
+
     playButton.addEventListener("click", () => {
       if (player.paused) {
         player.play();
@@ -254,10 +267,12 @@ SHORT_VIDEOS.forEach((video, i) => {
       document.querySelectorAll(".short-card video").forEach((otherPlayer) => {
         if (otherPlayer !== player) otherPlayer.pause();
       });
+      syncPosterState();
     });
-    player.addEventListener("play", () => card.classList.add("is-playing"));
-    player.addEventListener("pause", () => card.classList.remove("is-playing"));
-    player.addEventListener("ended", () => card.classList.remove("is-playing"));
+    player.addEventListener("pause", () => syncPosterState());
+    player.addEventListener("ended", () => syncPosterState());
+    player.addEventListener("loadeddata", () => syncPosterState());
+    syncPosterState();
   } else {
     card.querySelector(".short-card__play").addEventListener("click", (event) => {
       event.preventDefault();
