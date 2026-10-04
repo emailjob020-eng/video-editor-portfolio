@@ -116,7 +116,7 @@ PROJECTS.forEach((project, i) => {
     }
 
     if (!player) return;
-    if (row.classList.contains("is-playing")) {
+    if (!player.paused) {
       player.pause();
       row.classList.remove("is-playing");
       return;
@@ -134,16 +134,10 @@ PROJECTS.forEach((project, i) => {
       event.stopPropagation();
       open();
     });
-    player.addEventListener("click", (event) => {
+    row.querySelector(".bin-row__thumb").addEventListener("click", (event) => {
+      event.preventDefault();
       event.stopPropagation();
-      if (player.paused) {
-        stopOtherMedia(row);
-        player.muted = false;
-        player.volume = 1;
-        player.play();
-      } else {
-        player.pause();
-      }
+      open();
     });
     player.addEventListener("play", () => {
       player.muted = false;
