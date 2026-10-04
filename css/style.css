@@ -352,6 +352,13 @@ body.is-light .hero__actions .btn--primary:hover {
 .bin-row:nth-child(5).reveal { transition-delay: 0.48s; }
 .bin-row.reveal.is-visible { opacity: 1; }
 
+.bin-row:nth-child(5) {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  width: 100%;
+  max-width: calc(2 * 360px + 22px);
+}
+
 .bin-row__thumb {
   position: relative;
   width: 100%;

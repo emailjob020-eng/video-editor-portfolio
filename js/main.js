@@ -13,18 +13,12 @@
    ========================================================= */
 const PROJECTS = [
   {
-    title: "Brand film",
-    category: "Brand",
-    duration: "02:14",
-    youtubeId: "_vdJT4n8wzk",
-  },
-  {
-    title: "Short-form campaign",
-    category: "Social",
-    duration: "00:42",
+    title: "Creator story",
+    category: "Narrative",
+    duration: "04:18",
     youtubeId: "",
-    source: "Video/Reasy to Post_1.mp4",
-    thumbnail: "assets/img/thumbnaiil.png",
+    source: "Video/6th.mp4",
+    thumbnail: "assets/img/6th.png",
   },
   {
     title: "Documentary short",
@@ -51,12 +45,12 @@ const PROJECTS = [
     thumbnail: "assets/img/fat.jpg",
   },
   {
-    title: "Creator story",
-    category: "Narrative",
-    duration: "04:18",
+    title: "Short-form campaign",
+    category: "Social",
+    duration: "00:42",
     youtubeId: "",
-    source: "Video/6th.mp4",
-    thumbnail: "assets/img/6th.png",
+    source: "Video/Reasy to Post_1.mp4",
+    thumbnail: "assets/img/thumbnaiil.png",
   },
 ];
 
@@ -69,18 +63,8 @@ const SHORT_VIDEOS = [
   },
   {
     title: "Project 02",
-    description: "Add Video/project-2.mp4",
-    source: "",
-  },
-  {
-    title: "Project 03",
-    description: "Add Video/project-3.mp4",
-    source: "",
-  },
-  {
-    title: "Project 04",
-    description: "Add Video/project-4.mp4",
-    source: "",
+    description: "Comp 1 short-form edit",
+    source: "Video/Comp 1.mp4",
   },
 ];
 
