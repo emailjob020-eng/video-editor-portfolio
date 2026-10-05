@@ -1,0 +1,78 @@
+<!-- ===== PRICING SECTION: paste where you want it on the page ===== -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+#pricing{box-sizing:border-box;color:#F2F4FF;font-family:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;
+  background:radial-gradient(900px 420px at 50% 0,#12419F 0%,#0A1B52 45%,transparent 80%),#050816;padding:72px 24px 88px}
+#pricing *,#pricing *::before,#pricing *::after{box-sizing:inherit}
+#pricing .pr-inner{max-width:1000px;margin:0 auto;text-align:center}
+#pricing h2{margin:0 0 18px;font-size:clamp(2rem,5vw,3.1rem);font-weight:400;line-height:1.15;color:#F2F4FF}
+#pricing .pr-lead{margin:0 auto 32px;max-width:620px;color:#C9CFE8;font-size:1.15rem;font-weight:300}
+#pricing .pr-toggle{display:inline-flex;padding:5px;border:1px solid rgba(80,125,255,.55);border-radius:999px;background:rgba(10,20,60,.5)}
+#pricing .pr-toggle button{font:inherit;font-size:.95rem;border:0;border-radius:999px;padding:6px 18px;cursor:pointer;color:#C9CFE8;background:transparent}
+#pricing .pr-toggle button[aria-pressed="true"]{background:#2F6BFF;color:#fff}
+#pricing a:focus-visible,#pricing button:focus-visible{outline:3px solid #8FB0FF;outline-offset:3px}
+#pricing .pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:center;margin-top:56px;text-align:left}
+#pricing .pr-grid.pr-n2{grid-template-columns:repeat(2,1fr);max-width:680px;margin-left:auto;margin-right:auto}
+#pricing .pr-card{border:1px solid rgba(255,255,255,.2);border-radius:44px;padding:36px 30px 40px;color:#F2F4FF;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02)),#0D1124}
+#pricing .pr-card.pr-feat{padding:48px 30px 52px;border-color:rgba(160,190,255,.55);background:linear-gradient(180deg,#2A52C4 0%,#17265F 45%,#0D1228 100%)}
+#pricing .pr-card h3{margin:0 0 14px;font-size:1.05rem;font-weight:400;color:#F2F4FF}
+#pricing .pr-price{display:flex;align-items:baseline;gap:10px}
+#pricing .pr-price b{font-size:3rem;font-weight:600;line-height:1.1}
+#pricing .pr-price span{color:#C9CFE8;font-size:1.05rem}
+#pricing .pr-sub{margin:6px 0 24px;color:#9AA3C4;font-size:.8rem;min-height:2.4em}
+#pricing .pr-feat .pr-sub{color:#C3D0F5}
+#pricing .pr-cta{display:block;text-align:center;text-decoration:none;background:#fff;color:#0B1020;font-weight:600;padding:13px;border-radius:999px}
+#pricing ul{list-style:none;margin:24px 0 0;padding:20px 0 0;border-top:1px solid rgba(255,255,255,.18)}
+#pricing li{display:flex;align-items:center;gap:12px;padding:7px 0;margin:0;font-size:.92rem}
+#pricing .pr-ck{flex:none;width:18px;height:18px;border-radius:50%;background:#2F6BFF;position:relative}
+#pricing .pr-ck::after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+@media (max-width:860px){
+  #pricing .pr-grid,#pricing .pr-grid.pr-n2{grid-template-columns:1fr;gap:20px}
+  #pricing .pr-card.pr-feat{padding:36px 30px 40px}
+  #pricing{padding-top:48px}
+}
+</style>
+
+<section id="pricing">
+  <div class="pr-inner">
+    <h2>Editing that fits your posting schedule</h2>
+    <p class="pr-lead">I edit TikTok, Reels, Shorts and YouTube videos. Pay for a single video, or book a monthly plan and keep your channel posting.</p>
+    <div class="pr-toggle" role="group" aria-label="Pricing type">
+      <button type="button" data-mode="video" aria-pressed="true">Per video</button>
+      <button type="button" data-mode="month" aria-pressed="false">Monthly</button>
+    </div>
+    <div class="pr-grid" id="pr-grid"></div>
+  </div>
+</section>
+
+<script>
+(function(){
+var plans={
+  video:[
+    {n:"Short-form",p:15,u:"per video",s:"For TikTok, Reels and YouTube Shorts",f:["Up to 60 seconds","2-day turnaround","Animated captions","2 rounds of revisions"]},
+    {n:"Long YouTube",p:110,u:"per video",s:"For YouTube videos up to 10 minutes",f:["Up to 10 minutes","48-hour turnaround","3 rounds of revisions"]}
+  ],
+  month:[
+    {n:"Growth",p:360,u:"per month",s:"30 shorts a month",feat:1,f:["30 short-form videos","3 rounds of revisions"]},
+    {n:"Pro",p:710,u:"per month",s:"30 shorts and 4 YouTube videos",f:["30 short-form videos","4 YouTube videos, up to 10 min","3 rounds of revisions per video"]}
+  ]
+};
+var grid=document.getElementById('pr-grid'),btns=document.querySelectorAll('#pricing .pr-toggle button');
+function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function render(mode){
+  btns.forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.mode===mode))});
+  grid.className='pr-grid pr-n'+plans[mode].length;
+  grid.innerHTML=plans[mode].map(function(x){
+    return '<div class="pr-card'+(x.feat?' pr-feat':'')+'"><h3>'+esc(x.n)+'</h3>'+
+      '<div class="pr-price"><b>$'+x.p+'</b><span>'+x.u+'</span></div>'+
+      '<p class="pr-sub">'+esc(x.s)+'</p>'+
+      '<a class="pr-cta" href="mailto:you@example.com?subject='+encodeURIComponent(x.n+' plan')+'">Book now</a>'+
+      '<ul>'+x.f.map(function(i){return '<li><span class="pr-ck"></span>'+esc(i)+'</li>'}).join('')+'</ul></div>';
+  }).join('');
+}
+btns.forEach(function(b){b.addEventListener('click',function(){render(b.dataset.mode)})});
+render('video');
+})();
+</script>
+<!-- ===== END PRICING SECTION ===== -->

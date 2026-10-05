@@ -310,7 +310,7 @@ document.addEventListener("keydown", (e) => {
    enters the viewport. Runs once per element, then stops
    watching it (so it doesn't re-trigger while scrolling).
    ========================================================= */
-document.querySelectorAll(".section, .bin, .bin-row, .cap-row").forEach((el) => {
+document.querySelectorAll(".section, .pricing, .bin, .bin-row, .cap-row").forEach((el) => {
   el.classList.add("reveal");
 });
 
@@ -396,6 +396,110 @@ document.querySelectorAll(".hero__actions a").forEach((link) => {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
+
+/* =========================================================
+   PRICING
+   ========================================================= */
+const pricingPlans = {
+  video: [
+    {
+      name: "Short-form",
+      price: 15,
+      unit: "per video",
+      summary: "For TikTok, Reels and YouTube Shorts",
+      features: ["Up to 60 seconds", "1-day turnaround", "Animated captions", "2 rounds of revisions"],
+    },
+    {
+      name: "Long YouTube",
+      price: 110,
+      unit: "per video",
+      summary: "For YouTube videos up to 10 minutes",
+      features: ["Up to 10 minutes", "48-hour turnaround", "3 rounds of revisions"],
+    },
+  ],
+  month: [
+    {
+      name: "YouTube",
+      price: 350,
+      unit: "per month",
+      summary: "4 YouTube videos a month",
+      features: ["4 YouTube videos, up to 10 min", "3 rounds of revisions per video"],
+    },
+    {
+      name: "Shorts",
+      price: 360,
+      unit: "per month",
+      summary: "30 shorts a month",
+      featured: true,
+      features: ["30 short-form videos", "3 rounds of revisions"],
+    },
+    {
+      name: "Pro",
+      price: 650,
+      unit: "per month",
+      summary: "30 shorts and 4 YouTube videos",
+      features: ["30 short-form videos", "4 YouTube videos, up to 10 min", "3 rounds of revisions per video"],
+    },
+  ],
+};
+
+const pricingGrid = document.getElementById("pricingGrid");
+const pricingButtons = document.querySelectorAll("[data-pricing-mode]");
+
+function renderPricing(mode, animate = false) {
+  pricingGrid.classList.toggle("is-switching", animate);
+  pricingGrid.classList.toggle("pricing__grid--3", pricingPlans[mode].length === 3);
+  pricingButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.pricingMode === mode));
+  });
+
+  pricingGrid.replaceChildren();
+  pricingPlans[mode].forEach((plan) => {
+    const card = document.createElement("article");
+    card.className = `pricing__card${plan.featured ? " pricing__card--featured" : ""}`;
+
+    const name = document.createElement("h3");
+    name.textContent = plan.name;
+
+    const price = document.createElement("div");
+    price.className = "pricing__price";
+    const amount = document.createElement("strong");
+    amount.textContent = `$${plan.price}`;
+    const unit = document.createElement("span");
+    unit.textContent = plan.unit;
+    price.append(amount, unit);
+
+    const summary = document.createElement("p");
+    summary.className = "pricing__summary";
+    summary.textContent = plan.summary;
+
+    const cta = document.createElement("a");
+    cta.className = "pricing__cta";
+    cta.href = "https://t.me/techopiaET";
+    cta.target = "_blank";
+    cta.rel = "noopener";
+    cta.textContent = "Book now";
+
+    const features = document.createElement("ul");
+    features.className = "pricing__features";
+    plan.features.forEach((feature) => {
+      const item = document.createElement("li");
+      const check = document.createElement("span");
+      check.className = "pricing__check";
+      check.setAttribute("aria-hidden", "true");
+      item.append(check, document.createTextNode(feature));
+      features.append(item);
+    });
+
+    card.append(name, price, summary, cta, features);
+    pricingGrid.append(card);
+  });
+}
+
+pricingButtons.forEach((button) => {
+  button.addEventListener("click", () => renderPricing(button.dataset.pricingMode, true));
+});
+renderPricing("video");
 
 /* =========================================================
    FOOTER YEAR
