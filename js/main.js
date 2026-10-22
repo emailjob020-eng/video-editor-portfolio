@@ -420,14 +420,14 @@ const pricingPlans = {
   month: [
     {
       name: "YouTube",
-      price: 350,
+      price: 270,
       unit: "per month",
       summary: "4 YouTube videos a month",
       features: ["4 YouTube videos, up to 10 min", "3 rounds of revisions per video"],
     },
     {
       name: "Shorts",
-      price: 360,
+      price: 250,
       unit: "per month",
       summary: "30 shorts a month",
       featured: true,
@@ -435,7 +435,7 @@ const pricingPlans = {
     },
     {
       name: "Pro",
-      price: 650,
+      price: 400,
       unit: "per month",
       summary: "30 shorts and 4 YouTube videos",
       features: ["30 short-form videos", "4 YouTube videos, up to 10 min", "3 rounds of revisions per video"],
